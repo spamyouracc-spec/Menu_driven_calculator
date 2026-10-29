@@ -8,18 +8,11 @@ def add(a, b):
 def subtract(a, b):
     return a - b
 
-def multiply(a, b):
-    return a * b
-
-def divide(a, b):
-    if b == 0:
-        raise ValueError("Cannot divide by zero")
-    return a / b
-
 @app.route("/", methods=["GET", "POST"])
 def home():
     result = None
     error = None
+
     if request.method == "POST":
         try:
             num1 = float(request.form["num1"])
@@ -30,10 +23,6 @@ def home():
                 result = add(num1, num2)
             elif operation == "subtract":
                 result = subtract(num1, num2)
-            elif operation == "multiply":
-                result = multiply(num1, num2)
-            elif operation == "divide":
-                result = divide(num1, num2)
             else:
                 error = "Invalid operation"
         except ValueError as e:
@@ -61,8 +50,6 @@ def home():
         <select name="operation">
           <option value="add">Addition</option>
           <option value="subtract">Subtraction</option>
-          <option value="multiply">Multiplication</option>
-          <option value="divide">Division</option>
         </select>
         <button type="submit">Calculate</button>
       </form>
