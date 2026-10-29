@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = 'santhiya1907'
-        IMAGE_NAME = '24MIS0405'
+        IMAGE_NAME = '24mis0405'
         IMAGE_TAG = "${env.GIT_COMMIT.take(7)}"
     }
 
@@ -23,7 +23,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t %DOCKERHUB_USER%/%IMAGE_NAME%:%IMAGE_TAG% .'
+                bat 'set PATH=%PATH%;C:\\Program Files\\Git\\bin && "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t %DOCKERHUB_USER%/%IMAGE_NAME%:%IMAGE_TAG% .'
             }
         }
 
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     bat 'echo %DOCKER_PASS% | "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" login -u %DOCKER_USER% --password-stdin'
-                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" push %DOCKERHUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%'
+                    bat 'set PATH=%PATH%;C:\\Program Files\\Git\\bin && "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" push %DOCKERHUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%'
                 }
             }
         }
